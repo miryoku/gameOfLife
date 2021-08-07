@@ -172,3 +172,27 @@ btn.addEventListener("click", (e) => {
     startDraw(size);
     timer= setInterval(function () { draw() }, timer)
 })
+
+let sizePixelId = document.getElementById("sizePixel");
+sizePixelId.addEventListener("input",(e)=>{
+    let sizePixelSpan= document.getElementById("sizePixelSpan")
+    sizePixelSpan.innerText=sizePixelId.value
+})
+
+let heightId = document.getElementById("height");
+heightId.addEventListener("input",(e)=>{
+    let heightSpan= document.getElementById("heightSpan")
+    heightSpan.innerText=heightId.value
+})
+
+let WidthId = document.getElementById("width");
+WidthId.addEventListener("input",(e)=>{
+    let WidthSpan= document.getElementById("WidthSpan")
+    WidthSpan.innerText=WidthId.value
+})
+
+let timerId = document.getElementById("timer");
+timerId.addEventListener("input",(e)=>{
+    let timerSpan= document.getElementById("timerSpan")
+    timerSpan.innerText=timerId.value
+})
