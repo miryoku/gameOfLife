@@ -1,9 +1,10 @@
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-var list = [];
-var listTemp = [];
-const size = 5
-
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
+let list = [];
+let listTemp = [];
+let timer
+startDraw();
+timer = setInterval(function () { draw() }, 100)
 
 
 function Carre(x, y, life, size) {
@@ -11,71 +12,72 @@ function Carre(x, y, life, size) {
     this.y = y;
     this.life = life;
     this.color = (life ? "blue" : "white");
+    this.age=0;
     this.draw = function () {
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, size, size);
     }
 }
 
-function startDraw(size) {
+function startDraw(size=10) {
     var width = canvas.width;
     var height = canvas.height;
     let life;
-
-
+    list = [];
+    listTemp = [];
+    
     for (let i = 0; i < width; i += size) {
+
         list[i / size] = []
         listTemp[i / size] = []
         for (let j = 0; j < height; j += size) {
-         if (Math.floor(Math.random() * 2) == 0) { life = true } else { life = false }
+            if (Math.floor(Math.random() * 2) == 0) { life = true } else { life = false }
             list[i / size].push(new Carre(i, j, life, size));
             listTemp[i / size].push(new Carre(i, j, life, size));
             list[i / size][j / size].draw();
         }
     }
-    /*list[1][5].life = true
-    list[1][5].color = "blue";
-    list[1][5].draw()
-    list[2][5].life = true
-    list[2][5].color = "blue";
-    list[2][5].draw()
-    list[3][5].life = true
-    list[3][5].color = "blue";
-    list[3][5].draw()
-    list[2][4].life = true
-    list[2][4].color = "blue";
-    list[2][4].draw()
-    list[2][6].life = true
-    list[2][6].color = "blue";
-    list[2][6].draw()*/
+}
+
+function yearDead(cellule){
+    if(!cellule.life){
+        cellule.age--
+        switch(cellule.age){
+            case -1:
+                cellule.color="#485EEA"
+                break;
+            case -2:
+                cellule.color="#FFFFFF"
+                break;
+        }
+    }
+    
+    
 }
 
 
+
 function draw() {
-
-
-
+    
     for (let i = 0; i < list.length; i++) {
-
+        
         for (let j = 0; j < list[i].length; j++) {
-
+            
             let nbLife = NbLife(i, j);
 
-
             if (nbLife === 3) {
+                listTemp[i][j].age=0;
                 listTemp[i][j].life = true;
                 listTemp[i][j].color = "blue";
                 listTemp[i][j].draw()
 
-            } else if (nbLife == 2 || nbLife==3) {
+            } else if (nbLife == 2 || nbLife == 3) {
 
-            }else{
+            } else {
                 listTemp[i][j].life = false;
-                listTemp[i][j].color = "white";
+                yearDead(listTemp[i][j]);
                 listTemp[i][j].draw()
             }
-
-
         }
     }
     for (let i = 0; i < list.length; i++) {
@@ -85,6 +87,7 @@ function draw() {
 
         }
     }
+    
 }
 
 function NbLife(i, j) {
@@ -144,11 +147,28 @@ function check(i, iLenght, j, jLenght) {
 }
 
 
+let btn = document.getElementById("btn");
 
-
-
-startDraw(size);
-
-
-setInterval(function () { draw() }, 100)
-
+btn.addEventListener("click", (e) => {
+    let size =10;
+    let sizePixel = document.getElementById("sizePixel")
+    if (sizePixel.value >= 1 && sizePixel.value <= 100) {
+        size = parseInt(sizePixel.value)
+    }
+    let sizeHeight = document.getElementById("height")
+    let sizeWidth = document.getElementById("width")
+    if(sizeHeight.value>=100 ){
+        canvas.height=sizeHeight.value
+    }
+    if(sizeWidth.value>=100 ){
+        canvas.width=sizeWidth.value
+    }
+    let sizeTimer = document.getElementById("timer")
+    let timer=100
+    if(sizeTimer.value>=10 ){
+        timer= sizeTimer.value
+    }
+    clearInterval(timer);
+    startDraw(size);
+    timer= setInterval(function () { draw() }, timer)
+})
