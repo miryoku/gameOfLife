@@ -5,7 +5,7 @@ let listTemp = [];
 let timer
 startDraw();
 timer = setInterval(function () { draw() }, 100)
-
+draw() 
 
 function Carre(x, y, life, size) {
     this.x = x;
@@ -51,8 +51,7 @@ function yearDead(cellule){
                 break;
         }
     }
-    
-    
+ 
 }
 
 
@@ -65,17 +64,14 @@ function draw() {
             
             let nbLife = NbLife(i, j);
 
-            if (nbLife === 3) {
+            if(nbLife<2 ||nbLife>3){
+                listTemp[i][j].life = false;
+                yearDead(listTemp[i][j]);
+                listTemp[i][j].draw()
+            }else if(nbLife === 3){
                 listTemp[i][j].age=0;
                 listTemp[i][j].life = true;
                 listTemp[i][j].color = "blue";
-                listTemp[i][j].draw()
-
-            } else if (nbLife == 2 || nbLife == 3) {
-
-            } else {
-                listTemp[i][j].life = false;
-                yearDead(listTemp[i][j]);
                 listTemp[i][j].draw()
             }
         }
@@ -87,42 +83,27 @@ function draw() {
 
         }
     }
-    
+
 }
 
 function NbLife(i, j) {
     let nbLife = 0;
-    let [x, y] = check(i - 1, list.length, j - 1, list[i].length)
-    if (list[x][y].life) {
-        nbLife++;
-    }
-    [x, y] = check(i - 1, list.length, j, list[i].length);
-    if (list[x][y].life) {
-        nbLife++;
-    }
-    [x, y] = check(i - 1, list.length, j + 1, list[i].length)
-    if (list[x][y].life) {
-        nbLife++;
-    }
-    [x, y] = check(i, list.length, j - 1, list[i].length)
-    if (list[x][y].life) {
-        nbLife++;
-    }
-    [x, y] = check(i, list.length, j + 1, list[i].length)
-    if (list[x][y].life) {
-        nbLife++;
-    }
-    [x, y] = check(i + 1, list.length, j - 1, list[i].length)
-    if (list[x][y].life) {
-        nbLife++;
-    }
-    [x, y] = check(i + 1, list.length, j, list[i].length)
-    if (list[x][y].life) {
-        nbLife++;
-    }
-    [x, y] = check(i + 1, list.length, j + 1, list[i].length)
-    if (list[x][y].life) {
-        nbLife++;
+    let  tab=[];
+
+    tab.push(check(i - 1, list.length, j - 1, list[i].length))
+    tab.push( check(i - 1, list.length, j, list[i].length))
+    tab.push( check(i - 1, list.length, j + 1, list[i].length))
+    tab.push( check(i, list.length, j - 1, list[i].length))
+    tab.push( check(i, list.length, j + 1, list[i].length))
+    tab.push(check(i + 1, list.length, j - 1, list[i].length))
+    tab.push( check(i + 1, list.length, j, list[i].length))
+    tab.push( check(i + 1, list.length, j + 1, list[i].length))
+
+   for(let i =0 ;i<tab.length&&nbLife!=4;i++){
+        if (list[tab[i][0]][tab[i][1]].life) {
+            
+            nbLife++;
+        }       
     }
     return nbLife;
 }
@@ -164,13 +145,13 @@ btn.addEventListener("click", (e) => {
         canvas.width=sizeWidth.value
     }
     let sizeTimer = document.getElementById("timer")
-    let timer=100
+    let chrono=100
     if(sizeTimer.value>=10 ){
-        timer= sizeTimer.value
+        chrono= sizeTimer.value
     }
     clearInterval(timer);
     startDraw(size);
-    timer= setInterval(function () { draw() }, timer)
+    timer= setInterval(function () { draw() }, chrono)
 })
 
 let sizePixelId = document.getElementById("sizePixel");
@@ -195,4 +176,11 @@ let timerId = document.getElementById("timer");
 timerId.addEventListener("input",(e)=>{
     let timerSpan= document.getElementById("timerSpan")
     timerSpan.innerText=timerId.value
+})
+
+canvas.addEventListener("mousedown",(e)=>{
+    let sizePixel = document.getElementById("sizePixel").value; 
+    list[Math.trunc(e.x/sizePixel)][Math.trunc(e.y/sizePixel)].life=true
+    list[Math.trunc(e.x/sizePixel)][Math.trunc(e.y/sizePixel)].color="blue"
+    list[Math.trunc(e.x/sizePixel)][Math.trunc(e.y/sizePixel)].draw()
 })
