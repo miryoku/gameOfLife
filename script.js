@@ -7,14 +7,7 @@ let year
 let numberCellule
 
 startDraw();
-timer = setInterval(function () {
-    draw();
-    let yearBalise = document.getElementById('year');
-    yearBalise.innerText = year;
-    let number = document.getElementById('numberCellule');
-    number.innerText = numberCellule
-}, 100)
-
+boucleDraw();
 
 function Carre(x, y, life, size) {
     this.x = x;
@@ -65,8 +58,6 @@ function yearDead(cellule) {
 
 }
 
-
-
 function draw() {
     year++;
     numberCellule = 0;
@@ -104,7 +95,6 @@ function draw() {
 function NbLife(i, j) {
     let nbLife = 0;
     let tab = [];
-
     tab.push(check(i - 1, list.length, j - 1, list[i].length))
     tab.push(check(i - 1, list.length, j, list[i].length))
     tab.push(check(i - 1, list.length, j + 1, list[i].length))
@@ -166,14 +156,7 @@ btn.addEventListener("click", (e) => {
     }
     clearInterval(timer);
     startDraw(size);
-
-    timer = setInterval(function () {
-        draw();
-        let yearBalise = document.getElementById('year');
-        yearBalise.innerText = year;
-        let number = document.getElementById('numberCellule');
-        number.innerText = numberCellule
-    }, chrono)
+    boucleDraw(chrono)
 })
 
 let sizePixelId = document.getElementById("sizePixel");
@@ -185,13 +168,17 @@ sizePixelId.addEventListener("input", (e) => {
 let heightId = document.getElementById("height");
 heightId.addEventListener("input", (e) => {
     let heightSpan = document.getElementById("heightSpan")
-    heightSpan.innerText = heightId.value
+    heightSpan.innerText =Math.trunc((heightId.value/window.innerHeight)*100)+"%"
+
+
+   
+
 })
 
 let WidthId = document.getElementById("width");
 WidthId.addEventListener("input", (e) => {
     let WidthSpan = document.getElementById("WidthSpan")
-    WidthSpan.innerText = WidthId.value
+    WidthSpan.innerText = Math.trunc((WidthId.value/window.innerWidth)*100)+"%"
 })
 
 let timerId = document.getElementById("timer");
@@ -236,25 +223,37 @@ window.addEventListener('click',
 const GenerationBool = document.getElementById("generationBool");
 GenerationBool.addEventListener("click", (e) => {
     if (GenerationBool.innerText == "Stop") {
-        console.log("d")
         GenerationBool.innerText = "Play"
         clearInterval(timer);
-    } else if (GenerationBool.innerText == "Play") { console.log("fd")
+    } else if (GenerationBool.innerText == "Play") {
         let sizeTimer = document.getElementById("timer")
         let chrono = 100
         if (sizeTimer.value >= 10) {
             chrono = sizeTimer.value
         }
         GenerationBool.innerText = "Stop"
-        timer = setInterval(function () {
-            draw();
-            let yearBalise = document.getElementById('year');
-            yearBalise.innerText = year;
-            let number = document.getElementById('numberCellule');
-            number.innerText = numberCellule
-        }, chrono)
+        boucleDraw(chrono)
     }
 
 })
 
+
+const btnchangeOption=document.getElementById("btn");
+btnchangeOption.addEventListener("click",()=>{
+    let sizeHeight = document.getElementById("height")
+    let sizeWidth = document.getElementById("width")
+    sizeHeight.max=window.innerHeight
+    sizeWidth.max=window.innerWidth
+})
+
+
+function boucleDraw(chrono=100){
+    timer = setInterval(function () {
+        draw();
+        let yearBalise = document.getElementById('year');
+        yearBalise.innerText = year;
+        let number = document.getElementById('numberCellule');
+        number.innerText = numberCellule
+    }, chrono)
+}
 
