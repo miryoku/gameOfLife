@@ -232,3 +232,29 @@ window.addEventListener('click',
             modal.style.display = 'none'
         }
     })
+
+const GenerationBool = document.getElementById("generationBool");
+GenerationBool.addEventListener("click", (e) => {
+    if (GenerationBool.innerText == "Stop") {
+        console.log("d")
+        GenerationBool.innerText = "Play"
+        clearInterval(timer);
+    } else if (GenerationBool.innerText == "Play") { console.log("fd")
+        let sizeTimer = document.getElementById("timer")
+        let chrono = 100
+        if (sizeTimer.value >= 10) {
+            chrono = sizeTimer.value
+        }
+        GenerationBool.innerText = "Stop"
+        timer = setInterval(function () {
+            draw();
+            let yearBalise = document.getElementById('year');
+            yearBalise.innerText = year;
+            let number = document.getElementById('numberCellule');
+            number.innerText = numberCellule
+        }, chrono)
+    }
+
+})
+
+
