@@ -9,6 +9,7 @@ let celluleLife = document.getElementById("celluleLife")
 let deadCell = document.getElementById("deadCell")
 let cellJustDead=document.getElementById("cellJustDead")
 
+
 startDraw();
 boucleDraw();
 
@@ -254,6 +255,8 @@ function boucleDraw(chrono=100){
         yearBalise.innerText = year;
         let number = document.getElementById('numberCellule');
         number.innerText = numberCellule
+        let title = document.querySelector('title');
+        title.innerText= "Cell :"+numberCellule+" Gen :"+year
     }, chrono)
 }
 
