@@ -5,6 +5,9 @@ let listTemp = [];
 let timer
 let year
 let numberCellule
+let celluleLife = document.getElementById("celluleLife")
+let deadCell = document.getElementById("deadCell")
+let cellJustDead=document.getElementById("cellJustDead")
 
 startDraw();
 boucleDraw();
@@ -13,7 +16,7 @@ function Carre(x, y, life, size) {
     this.x = x;
     this.y = y;
     this.life = life;
-    this.color = (life ? "blue" : "white");
+    this.color = (life ? celluleLife.value : deadCell.value);
     this.age = 0;
     this.draw = function () {
         ctx.fillStyle = this.color;
@@ -48,10 +51,11 @@ function yearDead(cellule) {
         cellule.age--
         switch (cellule.age) {
             case -1:
-                cellule.color = "#485EEA"
+                cellule.color = cellJustDead.value
                 break;
             case -2:
-                cellule.color = "#FFFFFF"
+
+                cellule.color = deadCell.value
                 break;
         }
     }
@@ -74,7 +78,7 @@ function draw() {
             } else if (nbLife === 3) {
                 listTemp[i][j].age = 0;
                 listTemp[i][j].life = true;
-                listTemp[i][j].color = "blue";
+                listTemp[i][j].color = celluleLife.value;
                 listTemp[i][j].draw()
             }
             if (listTemp[i][j].life) {
@@ -114,10 +118,7 @@ function NbLife(i, j) {
 }
 
 
-
-
 function check(i, iLenght, j, jLenght) {
-
     if (i == -1) {
         i = iLenght - 1
     } else if (i == iLenght) {
@@ -128,7 +129,6 @@ function check(i, iLenght, j, jLenght) {
     } else if (j == jLenght) {
         j = 0
     }
-
     return [i, j]
 }
 
@@ -191,7 +191,7 @@ canvas.addEventListener("mousedown", (e) => {
     const nav = document.querySelector('nav');
     let sizePixel = document.getElementById("sizePixel").value;
     list[Math.trunc(e.x / sizePixel)][Math.trunc((e.y - nav.scrollHeight) / sizePixel)].life = true
-    list[Math.trunc(e.x / sizePixel)][Math.trunc((e.y - nav.scrollHeight) / sizePixel)].color = "blue"
+    list[Math.trunc(e.x / sizePixel)][Math.trunc((e.y - nav.scrollHeight) / sizePixel)].color = celluleLife.value
     list[Math.trunc(e.x / sizePixel)][Math.trunc((e.y - nav.scrollHeight) / sizePixel)].draw()
 })
 
