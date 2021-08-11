@@ -8,6 +8,7 @@ Avec des options :
 
 -change la couleur des cellules
 
-...
+-augmente la taille de la zone ou se déroule le jeu
+
 
 ![Capture](https://user-images.githubusercontent.com/43686944/128992735-332cf397-52e3-4c57-bdd0-5999560e61a2.PNG)
